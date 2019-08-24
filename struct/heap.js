@@ -7,11 +7,11 @@
 const Node = require('./node');
 
 class Heap {
-  constructor({ cmp, defaultValue }) {
+  constructor({ comparator, collection }) {
     this._nodes = [];
-    this._cmp = cmp ? cmp : (a, b) => a < b;
-    if (defaultValue) {
-      this.insertAll(defaultValue);
+    this.comparator = comparator ? comparator : (a, b) => a - b;
+    if (collection) {
+      this.insertAll(collection);
     }
   }
 
@@ -69,11 +69,11 @@ class Heap {
       const rightChildIndex = this._getRightChildIndex(index);
 
       const smallerChildIndex = rightChildIndex < count  && 
-        this._cmp(nodes[rightChildIndex].getKey(), nodes[leftChildIndex].getKey()) ?
+        this.comparator(nodes[rightChildIndex].getKey(), nodes[leftChildIndex].getKey()) < 0 ?
         rightChildIndex :
         leftChildIndex;
       
-      if (!this._cmp(nodes[smallerChildIndex].getKey(), node.getKey())) {
+      if (this.comparator(nodes[smallerChildIndex].getKey(), node.getKey()) > 0) {
         break;
       }
 
@@ -89,7 +89,7 @@ class Heap {
 
     while (index > 0) {
       const parentIndex = this._getParentIndex(index);
-      if (!this._cmp(nodes[parentIndex].getKey(), node.getKey())) {
+      if (this.comparator(nodes[parentIndex].getKey(), node.getKey()) > 0) {
         nodes[index] = nodes[parentIndex];
         index = parentIndex;
       } else {
