@@ -12,7 +12,7 @@ public:
         return sum;
     }
     void add(int x, int k) {
-        int size = a.size();
+        int size = a.size() - 1;
         while (x <= size) 
             a[x] += k, x += lsb(x);
     }
