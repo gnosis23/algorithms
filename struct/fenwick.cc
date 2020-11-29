@@ -1,5 +1,5 @@
 #include <vector>
-using std::vector
+using std::vector;
 
 class FenWick {
 public:
