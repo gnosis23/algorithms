@@ -7,17 +7,18 @@ public:
     typedef ll vtype;
     SegmentTree(int _size) {
         size = _size;
-        int n = 1;
-        while (n < _size) n *= 2;
-        n = 2 * n;
+        int n = _size * 4;
         data = std::move(vector<vtype>(n, 0));
+        delta = std::move(vector<vtype>(n, 0));
     }
     void build(vtype *d) {
         _build(d, 0, 0, size);
+        dumpArray(&data[0], data.size());
     }
     // offset-1, [a, b]
     void update(int a, int b, vtype v) {
         _update(a, b+1, v, 0, 0, size);
+        // dumpArray(&data[0], data.size());
     }
     // offset-1, [a, b]
     vtype query(int a, int b) {
@@ -36,28 +37,44 @@ private:
         data[k] = data[k * 2 + 1] + data[k * 2 + 2];
     }
     // usage: update(a, b, v, 0, 0, n)
-    vtype _update(int a, int b, vtype v, int k, int l, int r) {
-        if (r <= a || b <= l) return 0;
-        if (r - l < 2) {
-            data[k] += v;
-            return v;
+    void _update(int a, int b, vtype v, int k, int l, int r) {
+        if (r <= a || b <= l) return;
+        if (a <= l && r <= b) {
+            data[k] += v * (r - l);
+            delta[k] += v;
+            return;
         }
-        vtype v1 = _update(a, b, v, k * 2 + 1, l, (l + r)/2);
-        vtype v2 = _update(a, b, v, k * 2 + 2, (l + r)/2, r);
-        vtype val = v1 + v2;
-        data[k] += val;
-        return val;
-    }    
+        pushDown(k, l, r);
+        int mid = (l + r) / 2;
+        if (a<=mid) _update(a, b, v, k * 2 + 1, l, mid);
+        if (b>=mid) _update(a, b, v, k * 2 + 2, mid, r);
+        pushUp(k);
+    }
     // usage: query(a, b, 0, 0, n)
     vtype _query(int a, int b, int k, int l, int r) {
         if (r <= a || b <= l) return 0;
         if (a <= l && r <= b) return data[k];
         else {
-            vtype vl = _query(a, b, k * 2 + 1, l, (l + r)/2);
-            vtype vr = _query(a, b, k * 2 + 2, (l + r)/2, r);
-            return vl + vr;
+            pushDown(k, l, r);
+            ll res = 0;
+            int mid = (l + r) / 2;
+            if (a<=mid) res += _query(a, b, k * 2 + 1, l, mid);
+            if (b>=mid) res += _query(a, b, k * 2 + 2, mid, r);
+            return res;
         }
     }
+    inline void pushDown(int k, int l, int r) {
+        int mid = (l + r) / 2;
+        delta[k*2+1] += delta[k];
+        data[k*2+1] += delta[k] * (mid - l);
+        delta[k*2+2] += delta[k];
+        data[k*2+2] += delta[k] * (r - mid);
+        delta[k] = 0;
+    }
+    inline void pushUp(int k) {
+        data[k] = data[k*2+1] + data[k*2+2];
+    }
     vector<vtype> data;
+    vector<vtype> delta;
     int size;
 };
