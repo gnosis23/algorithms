@@ -1,6 +1,6 @@
 #include <vector>
 using std::vector;
-#define long long ll;
+typedef long long ll;
 
 class SegmentTree {
 public:
@@ -13,12 +13,10 @@ public:
     }
     void build(vtype *d) {
         _build(d, 0, 0, size);
-        dumpArray(&data[0], data.size());
     }
     // offset-1, [a, b]
     void update(int a, int b, vtype v) {
         _update(a, b+1, v, 0, 0, size);
-        // dumpArray(&data[0], data.size());
     }
     // offset-1, [a, b]
     vtype query(int a, int b) {
