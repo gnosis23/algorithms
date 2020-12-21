@@ -1,72 +1,41 @@
-#include <string>
+/**
+ * Trie
+ * 注意太大要放在全局
+ * maxnode参考：最大长度 2^(L)-1
+ * 
+ */
+#include <cstring>
 
+template <size_t maxnode = 100, size_t sigma_size = 26>
 class Trie {
-    const static int DICT_LEN = 26;
-    struct Node {
-        Node(): isValue(false) {}
-        bool isValue;
-        Node* nodes[DICT_LEN] = {};
-        Node* get(int offset) { return nodes[offset]; }
-    };
-    Node* head;
 public:
-    /** Initialize your data structure here. */
-    Trie() {
-        head = new Node();
-    }
-    ~Trie() {
-        release(head);
-    }
-    
-    /** Inserts a word into the trie. */
-    void insert(const std::string &word) {
-        if (word.empty()) return;
-        Node *ptr = head;
-        for (char ch : word) {
-            int index = offset(ch);
-            if (ptr->nodes[index] == nullptr) {
-                ptr->nodes[index] = new Node();
+    int ch[maxnode][sigma_size];
+    int val[maxnode];
+    int sz;
+    Trie() { sz = 1; memset(ch[0], 0, sizeof(ch[0])); }
+    inline int idx(char c) { return c - 'a'; }
+    void insert(char *s, int v) {
+        int u = 0, n = strlen(s);
+        for(int i = 0; i < n; ++i) {
+            int c = idx(s[i]);
+            if (!ch[u][c]) {
+                memset(ch[sz], 0, sizeof(ch[sz]));
+                val[sz] = 0;
+                ch[u][c] = sz++;
             }
-            ptr = ptr->get(index);
+            u = ch[u][c];
         }
-        ptr->isValue = true;
+        val[u] = v;
     }
-    
-    /** Returns if the word is in the trie. */
-    bool search(const std::string &word) {
-        Node *ptr = head;
-        for (char ch : word) {
-            int index = offset(ch);
-            if (ptr->nodes[index] == nullptr) {
-                return false;
+    int find(char *s) {
+        int u = 0, n = strlen(s);
+        for(int i = 0; i < n; ++i) {
+            int c = idx(s[i]);
+            if (!ch[u][c]) {
+                return -1;
             }
-            ptr = ptr->get(index);
+            u = ch[u][c];
         }
-        return ptr != nullptr && ptr->isValue;
-    }
-    
-    /** Returns if there is any word in the trie that starts with the given prefix. */
-    bool startsWith(const std::string &prefix) {
-        Node *ptr = head;
-        for (char ch : prefix) {
-            int index = offset(ch);
-            if (ptr->nodes[index] == nullptr) {
-                return false;
-            }
-            ptr = ptr->get(index);
-        }
-        return ptr != nullptr;
-    }
-private:
-    inline int offset(char ch) {
-        return ch - 'a';
-    }
-    void release(Node* node) {
-        for (int i = 0; i != DICT_LEN; ++i) {
-            if (node->nodes[i] != nullptr) {
-                release(node->nodes[i]);
-            }
-        }
-        delete node;
+        return val[u];
     }
 };
