@@ -17,18 +17,19 @@ function quickSort(arr, low, high) {
 
 // take last element as pivot
 function partition(arr, low, high) {
-  const pivot = arr[high];
+  let pivot = Math.floor(Math.random() * (high - low)) + low;
+  swap(arr, pivot, high);
 
-  let i = low - 1;
-  for (let j = low; j < high; j++) {
-    if (arr[j] <= pivot) {
-      i++;
-      swap(arr, i, j);
+  let orderedIndex = low;
+  for (let i = low; i < high; ++i) {
+    if (arr[i] <= arr[high]) {
+      swap(arr, orderedIndex, i);
+      orderedIndex++;
     }
   }
 
-  swap(arr, i + 1, high);
-  return i + 1;
+  swap(arr, orderedIndex, high);
+  return orderedIndex;
 }
 
 function swap(arr, i, j) {
