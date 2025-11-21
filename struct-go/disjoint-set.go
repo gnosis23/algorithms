@@ -1,3 +1,5 @@
+package container
+
 type DisjointSet struct {
 	P    []int
 	Rank []int
