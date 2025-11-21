@@ -1,15 +1,18 @@
 package container
 
+// 并查集
+// - 带高度和路径压缩
+// - n 从 0 开始。 1..n 需要+1
 type DisjointSet struct {
-	P    []int
-	Rank []int
+	P    []int // 父节点
+	Rank []int // 树高度
 }
 
 func InitDisjointSet(n int) *DisjointSet {
 	d := &DisjointSet{}
 	d.P = make([]int, n)
 	d.Rank = make([]int, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		d.P[i] = i
 	}
 	return d
@@ -21,7 +24,7 @@ func (d *DisjointSet) InSame(u, v int) bool {
 
 func (d *DisjointSet) Join(u, v int) {
 	if d.FindSet(u) != d.FindSet(v) {
-		d.Link(d.FindSet(u), d.FindSet(v))
+		d.link(d.FindSet(u), d.FindSet(v))
 	}
 }
 
@@ -32,7 +35,7 @@ func (d *DisjointSet) FindSet(u int) int {
 	return d.P[u]
 }
 
-func (d *DisjointSet) Link(u, v int) {
+func (d *DisjointSet) link(u, v int) {
 	if d.Rank[u] > d.Rank[v] {
 		d.P[v] = u
 	} else {

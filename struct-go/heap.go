@@ -5,6 +5,8 @@ type Item struct {
 	priority int
 }
 
+// 优先队列
+// 小的在前
 type PriorityQueue []*Item
 
 func (pq PriorityQueue) Len() int { return len(pq) }
