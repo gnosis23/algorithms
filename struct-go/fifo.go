@@ -1,42 +1,71 @@
 package container
 
-type FifoQueue[T any] struct {
-	items []T
+// node represents a single node in the linked list
+type node[T any] struct {
+	value T
+	next  *node[T]
 }
 
-func NewFifoQueue[T any]() *FifoQueue[T] {
+type FifoQueue[T any] struct {
+	head *node[T]
+	tail *node[T]
+	size int
+}
+
+func InitFifoQueue[T any]() *FifoQueue[T] {
 	return &FifoQueue[T]{
-		items: make([]T, 0),
+		head: nil,
+		tail: nil,
+		size: 0,
 	}
 }
 
-func (d *FifoQueue[T]) PopFront() T {
+func (q *FifoQueue[T]) PopFront() T {
 	var zero T
-	if d.IsEmpty() {
+	if q.IsEmpty() {
 		return zero
 	}
-	item := d.items[0]
-	// 注意：这涉及到元素移动和内存重新分配，效率相对较低（O(n)）
-	d.items = d.items[1:]
+
+	item := q.head.value
+	q.head = q.head.next
+	q.size--
+
+	// If the queue becomes empty after popping, update tail to nil
+	if q.head == nil {
+		q.tail = nil
+	}
+
 	return item
 }
 
-func (d *FifoQueue[T]) PeekFront() T {
+func (q *FifoQueue[T]) PeekFront() T {
 	var zero T
-	if d.IsEmpty() {
+	if q.IsEmpty() {
 		return zero
 	}
-	return d.items[0]
+	return q.head.value
 }
 
-func (d *FifoQueue[T]) PushBack(item T) {
-	d.items = append(d.items, item)
+func (q *FifoQueue[T]) PushBack(item T) {
+	newNode := &node[T]{
+		value: item,
+		next:  nil,
+	}
+
+	if q.IsEmpty() {
+		q.head = newNode
+		q.tail = newNode
+	} else {
+		q.tail.next = newNode
+		q.tail = newNode
+	}
+	q.size++
 }
 
-func (d *FifoQueue[T]) IsEmpty() bool {
-	return len(d.items) == 0
+func (q *FifoQueue[T]) IsEmpty() bool {
+	return q.size == 0
 }
 
-func (d *FifoQueue[T]) Size() int {
-	return len(d.items)
+func (q *FifoQueue[T]) Size() int {
+	return q.size
 }
