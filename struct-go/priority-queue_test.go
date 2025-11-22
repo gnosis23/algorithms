@@ -1,97 +1,87 @@
 package container
 
 import (
-	"container/heap"
 	"testing"
 )
 
-func TestPriorityQueue_Len(t *testing.T) {
-	pq := PriorityQueue{}
+func TestPriorityQueue_New(t *testing.T) {
+	pq := InitPriorityQueue()
 	if pq.Len() != 0 {
 		t.Errorf("Expected length 0, got %d", pq.Len())
 	}
-
-	pq = append(pq, &Item{value: "test", priority: 1})
-	if pq.Len() != 1 {
-		t.Errorf("Expected length 1, got %d", pq.Len())
-	}
-}
-
-func TestPriorityQueue_Less(t *testing.T) {
-	pq := PriorityQueue{
-		&Item{value: "low", priority: 1},
-		&Item{value: "high", priority: 5},
-	}
-
-	if !pq.Less(0, 1) {
-		t.Error("Expected item at index 0 to be less than item at index 1")
-	}
-
-	if pq.Less(1, 0) {
-		t.Error("Expected item at index 1 to not be less than item at index 0")
-	}
-}
-
-func TestPriorityQueue_Swap(t *testing.T) {
-	pq := PriorityQueue{
-		&Item{value: "first", priority: 1},
-		&Item{value: "second", priority: 2},
-	}
-
-	pq.Swap(0, 1)
-
-	if pq[0].value != "second" || pq[0].priority != 2 {
-		t.Error("Swap failed for index 0")
-	}
-	if pq[1].value != "first" || pq[1].priority != 1 {
-		t.Error("Swap failed for index 1")
+	if !pq.IsEmpty() {
+		t.Error("Expected empty queue")
 	}
 }
 
 func TestPriorityQueue_Push(t *testing.T) {
-	pq := &PriorityQueue{}
-	item := &Item{value: "test", priority: 1}
-
-	pq.Push(item)
+	pq := InitPriorityQueue()
+	pq.Push("test", 1)
 
 	if pq.Len() != 1 {
 		t.Errorf("Expected length 1 after push, got %d", pq.Len())
 	}
-	if (*pq)[0] != item {
-		t.Error("Pushed item not found at expected position")
+	if pq.IsEmpty() {
+		t.Error("Expected non-empty queue after push")
 	}
 }
 
 func TestPriorityQueue_Pop(t *testing.T) {
-	pq := &PriorityQueue{
-		&Item{value: "first", priority: 1},
-		&Item{value: "second", priority: 2},
+	pq := InitPriorityQueue()
+	pq.Push("first", 1)
+	pq.Push("second", 2)
+
+	item := pq.Pop()
+	if item == nil {
+		t.Fatal("Expected non-nil item from Pop")
 	}
-
-	item := pq.Pop().(*Item)
-
-	if item.value != "second" || item.priority != 2 {
-		t.Error("Pop did not return the last item")
+	if item.Value != "first" || item.Priority != 1 {
+		t.Errorf("Expected item with value 'first' and priority 1, got %+v", item)
 	}
 	if pq.Len() != 1 {
 		t.Errorf("Expected length 1 after pop, got %d", pq.Len())
 	}
+
+	item = pq.Pop()
+	if item == nil {
+		t.Fatal("Expected non-nil item from Pop")
+	}
+	if item.Value != "second" || item.Priority != 2 {
+		t.Errorf("Expected item with value 'second' and priority 2, got %+v", item)
+	}
+	if pq.Len() != 0 {
+		t.Errorf("Expected length 0 after popping all items, got %d", pq.Len())
+	}
+}
+
+func TestPriorityQueue_Peek(t *testing.T) {
+	pq := InitPriorityQueue()
+
+	// Test peek on empty queue
+	if pq.Peek() != nil {
+		t.Error("Expected nil when peeking empty queue")
+	}
+
+	pq.Push("test", 1)
+	item := pq.Peek()
+	if item == nil {
+		t.Fatal("Expected non-nil item from Peek")
+	}
+	if item.Value != "test" || item.Priority != 1 {
+		t.Errorf("Expected item with value 'test' and priority 1, got %+v", item)
+	}
+	if pq.Len() != 1 {
+		t.Errorf("Expected length unchanged after peek, got %d", pq.Len())
+	}
 }
 
 func TestPriorityQueue_HeapOperations(t *testing.T) {
-	pq := &PriorityQueue{}
-	heap.Init(pq)
+	pq := InitPriorityQueue()
 
 	// Test pushing multiple items
-	items := []*Item{
-		{value: "banana", priority: 3},
-		{value: "apple", priority: 2},
-		{value: "pear", priority: 4},
-	}
-
-	for _, item := range items {
-		heap.Push(pq, item)
-	}
+	pq.Push("banana", 3)
+	pq.Push("apple", 2)
+	pq.Push("pear", 4)
 
 	if pq.Len() != 3 {
 		t.Errorf("Expected length 3 after pushing items, got %d", pq.Len())
@@ -100,9 +90,12 @@ func TestPriorityQueue_HeapOperations(t *testing.T) {
 	// Test popping items in priority order
 	expectedOrder := []string{"apple", "banana", "pear"}
 	for i, expected := range expectedOrder {
-		item := heap.Pop(pq).(*Item)
-		if item.value != expected {
-			t.Errorf("Expected %s at position %d, got %s", expected, i, item.value)
+		item := pq.Pop()
+		if item == nil {
+			t.Fatalf("Expected non-nil item at position %d", i)
+		}
+		if item.Value != expected {
+			t.Errorf("Expected %s at position %d, got %s", expected, i, item.Value)
 		}
 	}
 
@@ -112,70 +105,156 @@ func TestPriorityQueue_HeapOperations(t *testing.T) {
 }
 
 func TestPriorityQueue_EmptyPop(t *testing.T) {
-	pq := &PriorityQueue{}
-	heap.Init(pq)
+	pq := InitPriorityQueue()
 
-	// The Go heap implementation panics when popping from empty heap
-	// This is expected behavior, so we test that it actually panics
-	func() {
-		defer func() {
-			if r := recover(); r == nil {
-				t.Error("Expected panic when popping from empty heap")
-			}
-		}()
-		pq.Pop()
-	}()
+	// Our implementation returns nil when popping from empty queue
+	item := pq.Pop()
+	if item != nil {
+		t.Error("Expected nil when popping from empty queue")
+	}
 }
 
 func TestPriorityQueue_UpdatePriority(t *testing.T) {
-	pq := &PriorityQueue{}
-	heap.Init(pq)
+	pq := InitPriorityQueue()
 
 	// Add items
-	item1 := &Item{value: "low", priority: 1}
-	item2 := &Item{value: "medium", priority: 3}
-	item3 := &Item{value: "high", priority: 5}
+	pq.Push("low", 1)
+	pq.Push("medium", 3)
+	pq.Push("high", 5)
 
-	heap.Push(pq, item1)
-	heap.Push(pq, item2)
-	heap.Push(pq, item3)
+	// Update priority of "medium" to be the highest
+	if !pq.Update("medium", 0) {
+		t.Error("Failed to update priority")
+	}
 
-	// Update priority of item2 to be the highest
-	item2.priority = 0
-	heap.Fix(pq, 1) // Fix the heap after priority change
+	// Now "medium" should be at the top
+	top := pq.Pop()
+	if top.Value != "medium" {
+		t.Errorf("Expected 'medium' to be at the top after priority update, got %s", top.Value)
+	}
+}
 
-	// Now item2 should be at the top
-	top := heap.Pop(pq).(*Item)
-	if top != item2 {
-		t.Error("Expected item2 to be at the top after priority update")
+func TestPriorityQueue_UpdateNonExistent(t *testing.T) {
+	pq := InitPriorityQueue()
+	pq.Push("test", 1)
+
+	// Try to update non-existent item
+	if pq.Update("nonexistent", 0) {
+		t.Error("Expected false when updating non-existent item")
+	}
+}
+
+func TestPriorityQueue_Remove(t *testing.T) {
+	pq := InitPriorityQueue()
+	pq.Push("a", 1)
+	pq.Push("b", 2)
+	pq.Push("c", 3)
+
+	// Remove middle item
+	if !pq.Remove("b") {
+		t.Error("Failed to remove item")
+	}
+	if pq.Len() != 2 {
+		t.Errorf("Expected length 2 after removal, got %d", pq.Len())
+	}
+
+	// Verify remaining items
+	item1 := pq.Pop()
+	item2 := pq.Pop()
+	if item1.Value != "a" || item2.Value != "c" {
+		t.Errorf("Expected items 'a' and 'c' after removal, got %s and %s", item1.Value, item2.Value)
+	}
+}
+
+func TestPriorityQueue_RemoveNonExistent(t *testing.T) {
+	pq := InitPriorityQueue()
+	pq.Push("test", 1)
+
+	// Try to remove non-existent item
+	if pq.Remove("nonexistent") {
+		t.Error("Expected false when removing non-existent item")
 	}
 }
 
 func TestPriorityQueue_MixedOperations(t *testing.T) {
-	pq := &PriorityQueue{}
-	heap.Init(pq)
+	pq := InitPriorityQueue()
 
 	// Test mixed push and pop operations
-	heap.Push(pq, &Item{value: "a", priority: 5})
-	heap.Push(pq, &Item{value: "b", priority: 1})
-	heap.Push(pq, &Item{value: "c", priority: 3})
+	pq.Push("a", 5)
+	pq.Push("b", 1)
+	pq.Push("c", 3)
 
 	// Pop the smallest
-	item := heap.Pop(pq).(*Item)
-	if item.value != "b" {
-		t.Errorf("Expected 'b', got '%s'", item.value)
+	item := pq.Pop()
+	if item.Value != "b" {
+		t.Errorf("Expected 'b', got '%s'", item.Value)
 	}
 
 	// Push more items
-	heap.Push(pq, &Item{value: "d", priority: 2})
-	heap.Push(pq, &Item{value: "e", priority: 0})
+	pq.Push("d", 2)
+	pq.Push("e", 0)
 
 	// Pop in correct order
 	expectedOrder := []string{"e", "d", "c", "a"}
 	for _, expected := range expectedOrder {
-		item := heap.Pop(pq).(*Item)
-		if item.value != expected {
-			t.Errorf("Expected '%s', got '%s'", expected, item.value)
+		item := pq.Pop()
+		if item.Value != expected {
+			t.Errorf("Expected '%s', got '%s'", expected, item.Value)
 		}
+	}
+}
+
+func TestPriorityQueue_ComplexScenario(t *testing.T) {
+	pq := InitPriorityQueue()
+
+	// Add items with same priority
+	pq.Push("a", 1)
+	pq.Push("b", 1)
+	pq.Push("c", 1)
+
+	// With heap implementation, same priority items may not maintain insertion order
+	// Just verify we get all three items and they all have priority 1
+	items := make([]*PriorityQueueItem, 3)
+	for i := 0; i < 3; i++ {
+		items[i] = pq.Pop()
+		if items[i] == nil {
+			t.Fatalf("Expected non-nil item at position %d", i)
+		}
+		if items[i].Priority != 1 {
+			t.Errorf("Expected priority 1, got %d", items[i].Priority)
+		}
+	}
+
+	// Verify we got all three distinct values
+	values := make(map[string]bool)
+	for _, item := range items {
+		values[item.Value] = true
+	}
+	if len(values) != 3 {
+		t.Errorf("Expected 3 distinct values, got %v", values)
+	}
+}
+
+func TestPriorityQueue_UpdateAndRemove(t *testing.T) {
+	pq := InitPriorityQueue()
+	pq.Push("item1", 5)
+	pq.Push("item2", 3)
+	pq.Push("item3", 7)
+
+	// Update item2 to have higher priority
+	pq.Update("item2", 1)
+
+	// Remove item3
+	pq.Remove("item3")
+
+	// Should get item2 first, then item1
+	item1 := pq.Pop()
+	item2 := pq.Pop()
+
+	if item1.Value != "item2" || item1.Priority != 1 {
+		t.Errorf("Expected item2 with priority 1 first, got %+v", item1)
+	}
+	if item2.Value != "item1" || item2.Priority != 5 {
+		t.Errorf("Expected item1 with priority 5 second, got %+v", item2)
 	}
 }
