@@ -47,11 +47,11 @@ func (x *RangeMinQuery) Update(k, a int) {
 // 后面的参数为了计算方便
 // k是节点的编号，l和r表示这个节点对应的[l,r)区间
 // Usage: query(a, b, 0, 0, cap)
-func (x *RangeMinQuery) Query(a, b int) int {
-	return x.query(a, b, 0, 0, x.cap)
+func (x *RangeMinQuery) QueryAll(a, b int) int {
+	return x.Query(a, b, 0, 0, x.cap)
 }
 
-func (x *RangeMinQuery) query(a, b, k, l, r int) int {
+func (x *RangeMinQuery) Query(a, b, k, l, r int) int {
 	if (r <= a) || (b <= l) {
 		return math.MaxInt
 	}
@@ -59,8 +59,8 @@ func (x *RangeMinQuery) query(a, b, k, l, r int) int {
 	if (a <= l) && (r <= b) {
 		return x.data[k]
 	} else {
-		vl := x.query(a, b, k*2+1, l, (l+r)/2)
-		vr := x.query(a, b, k*2+2, (l+r)/2, r)
+		vl := x.Query(a, b, k*2+1, l, (l+r)/2)
+		vr := x.Query(a, b, k*2+2, (l+r)/2, r)
 		return min(vl, vr)
 	}
 }

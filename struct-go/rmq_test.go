@@ -69,7 +69,7 @@ func TestRangeMinQuery_UpdateAndQuery(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result := rmq.Query(tc.a, tc.b)
+		result := rmq.QueryAll(tc.a, tc.b)
 		if result != tc.expected {
 			t.Errorf("Query(%d, %d): expected %d, got %d", tc.a, tc.b, tc.expected, result)
 		}
@@ -87,25 +87,25 @@ func TestRangeMinQuery_UpdateChanges(t *testing.T) {
 	rmq.Update(3, 2)
 
 	// 初始查询
-	if result := rmq.Query(0, 4); result != 2 {
+	if result := rmq.QueryAll(0, 4); result != 2 {
 		t.Errorf("Initial query [0,4): expected 2, got %d", result)
 	}
 
 	// 更新最小值位置
 	rmq.Update(3, 10)
-	if result := rmq.Query(0, 4); result != 3 {
+	if result := rmq.QueryAll(0, 4); result != 3 {
 		t.Errorf("After updating position 3: expected 3, got %d", result)
 	}
 
 	// 更新新的最小值
 	rmq.Update(0, 1)
-	if result := rmq.Query(0, 4); result != 1 {
+	if result := rmq.QueryAll(0, 4); result != 1 {
 		t.Errorf("After updating position 0: expected 1, got %d", result)
 	}
 
 	// 更新中间位置
 	rmq.Update(2, 0)
-	if result := rmq.Query(0, 4); result != 0 {
+	if result := rmq.QueryAll(0, 4); result != 0 {
 		t.Errorf("After updating position 2: expected 0, got %d", result)
 	}
 }
@@ -116,17 +116,17 @@ func TestRangeMinQuery_EdgeCases(t *testing.T) {
 
 	// 单元素数组
 	rmq.Update(0, 42)
-	if result := rmq.Query(0, 1); result != 42 {
+	if result := rmq.QueryAll(0, 1); result != 42 {
 		t.Errorf("Single element query: expected 42, got %d", result)
 	}
 
 	// 空区间查询
-	if result := rmq.Query(1, 1); result != math.MaxInt {
+	if result := rmq.QueryAll(1, 1); result != math.MaxInt {
 		t.Errorf("Empty range query: expected math.MaxInt, got %d", result)
 	}
 
 	// 超出范围的查询
-	if result := rmq.Query(0, 2); result != 42 {
+	if result := rmq.QueryAll(0, 2); result != 42 {
 		t.Errorf("Query beyond capacity: expected 42, got %d", result)
 	}
 }
@@ -155,7 +155,7 @@ func TestRangeMinQuery_NegativeNumbers(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result := rmq.Query(tc.a, tc.b)
+		result := rmq.QueryAll(tc.a, tc.b)
 		if result != tc.expected {
 			t.Errorf("Query(%d, %d) with negative numbers: expected %d, got %d", tc.a, tc.b, tc.expected, result)
 		}
@@ -171,7 +171,7 @@ func TestRangeMinQuery_LargeNumbers(t *testing.T) {
 		rmq.Update(i, v)
 	}
 
-	if result := rmq.Query(0, 3); result != math.MaxInt-2 {
+	if result := rmq.QueryAll(0, 3); result != math.MaxInt-2 {
 		t.Errorf("Large numbers query: expected %d, got %d", math.MaxInt-2, result)
 	}
 }
@@ -186,23 +186,23 @@ func TestRangeMinQuery_SequentialUpdates(t *testing.T) {
 	rmq.Update(2, 30)
 
 	// 验证初始状态
-	if result := rmq.Query(0, 3); result != 10 {
+	if result := rmq.QueryAll(0, 3); result != 10 {
 		t.Errorf("Initial state: expected 10, got %d", result)
 	}
 
 	// 连续更新
 	rmq.Update(1, 5) // 现在数组: [10, 5, 30]
-	if result := rmq.Query(0, 3); result != 5 {
+	if result := rmq.QueryAll(0, 3); result != 5 {
 		t.Errorf("After first update: expected 5, got %d", result)
 	}
 
 	rmq.Update(0, 8) // 现在数组: [8, 5, 30]
-	if result := rmq.Query(0, 3); result != 5 {
+	if result := rmq.QueryAll(0, 3); result != 5 {
 		t.Errorf("After second update: expected 5, got %d", result)
 	}
 
 	rmq.Update(2, 3) // 现在数组: [8, 5, 3]
-	if result := rmq.Query(0, 3); result != 3 {
+	if result := rmq.QueryAll(0, 3); result != 3 {
 		t.Errorf("After third update: expected 3, got %d", result)
 	}
 }
