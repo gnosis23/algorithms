@@ -1,8 +1,8 @@
 // 独立的 Issue 关键词回复逻辑
 module.exports = async ({ github, context }) => {
   // 获取 Issue 标题和内容，并转换为小写以便进行不区分大小写的匹配
-  const title = context.payload.issue.title.toLowerCase();
-  const body = context.payload.issue.body.toLowerCase();
+  const title = (context.payload.issue.title || "").toLowerCase();
+  const body = (context.payload.issue.body || "").toLowerCase();
   const issueNumber = context.payload.issue.number;
 
   // ⚠️ 预定义的关键词及其对应的随机回复列表
