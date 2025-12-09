@@ -20,7 +20,9 @@ jobs:
       - name: 检查 Issue 标题和内容并回复
         uses: actions/github-script@v7
         with:
-          # 使用 script 选项指定要运行的 JS 文件路径
-          script: ./.github/scripts/auto-reply.js
           # 传递 github 和 context 对象给脚本
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          # 使用 script 选项指定要运行的 JS 文件路径
+          script: |
+            const script = require('./.github/scripts/auto-reply.js')
+            await script({ github, context })
