@@ -1,0 +1,26 @@
+name: Issue Keyword Responder
+
+# 触发事件：在 Issue 被创建时运行
+on:
+  issues:
+    types: [opened]
+
+# 授予工作流程写入 Issue 评论的权限
+permissions:
+  issues: write
+
+jobs:
+  check_and_respond:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 检出代码：这一步是必要的，因为它将 .github/scripts/issue-responder.js 文件带入 Runner 环境
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      # 2. 执行独立脚本文件
+      - name: 检查 Issue 标题和内容并回复
+        uses: actions/github-script@v7
+        with:
+          # 使用 script-file 选项指定要运行的 JS 文件路径
+          script-file: ./.github/scripts/auto-reply.js
+          # 传递 github 和 context 对象给脚本
+          github-token: ${{ secrets.GITHUB_TOKEN }}
