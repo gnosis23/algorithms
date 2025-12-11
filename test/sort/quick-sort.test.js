@@ -1,4 +1,4 @@
-const quickSort = require('../../sort/quick-sort');
+const quickSort = require('../../javascript/sort/quick-sort');
 let arr = [4, 0, 0, 8, 1, 2, 3, 1, 2, 3];
 quickSort(arr);
 console.log(arr);

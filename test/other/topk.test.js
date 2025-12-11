@@ -1,4 +1,4 @@
-const topk = require('../../other/topk');
+const topk = require('../../javascript/other/topk');
 
 console.log(topk([4, 0, 0, 8, 1, 2, 3, 1, 2, 3], 5));
 console.log(topk([4, 0, 0, 8, 1, 2, 3, 1, 2, 3], 4));

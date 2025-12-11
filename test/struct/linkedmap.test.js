@@ -1,4 +1,4 @@
-const LinkedMap = require('../../struct/linkedmap');
+const LinkedMap = require('../../javascript/struct/linkedmap');
 
 var m = new LinkedMap();
 m.set('param1', 'A');

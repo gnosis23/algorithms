@@ -1,4 +1,4 @@
-const Heap = require('../../struct/heap');
+const Heap = require('../../javascript/struct/heap');
 
 const heap = new Heap({
   comparator: (a, b) => -(a - b),
