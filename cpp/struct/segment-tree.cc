@@ -5,7 +5,7 @@ typedef long long ll;
 /**
  * 线段树
  * 支持区间加法，区间求和
- * 根结点从0开始，区间左闭右开从0开始。
+ * 根节点从0开始，区间左闭右开从0开始。
  */
 class SegmentTree {
 public:
