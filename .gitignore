@@ -1,1 +1,4 @@
 .claude/*.local.json
+.pytest_*/
+.venv/
+__pycache__/

@@ -30,28 +30,3 @@ class BinaryIndexedTree:
         while n <= self.n:
             self.data[n] += a
             n += n & -n
-
-
-def main():
-    bit = BinaryIndexedTree(5)
-    bit.add(0, 5)
-    bit.add(1, 3)
-    bit.add(2, 7)
-    bit.add(3, 2)
-    bit.add(4, 8)
-
-    print(bit.sum(0))  # 5
-    print(bit.sum(1))  # 8
-    print(bit.sum(2))  # 15
-    print(bit.sum(3))  # 17
-    print(bit.sum(4))  # 25
-
-    # update 0
-    bit.add(0, -1)
-
-    print(bit.sum(0))  # 4
-    print(bit.sum(1))  # 7
-    print(bit.sum(2))  # 14
-
-
-main()

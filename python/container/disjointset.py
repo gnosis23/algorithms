@@ -31,19 +31,3 @@ class DisjointSet:
             self.p[u] = v
             if self.rank[u] == self.rank[v]:
                 self.rank[u] = self.rank[v] + 1
-
-
-def main():
-    ds = DisjointSet(10)
-    print(ds.in_same(0, 2))  # False
-
-    ds.join(0, 1)
-    ds.join(1, 2)
-    print(ds.in_same(0, 2))  # True
-
-    ds.join(0, 9)
-    print(ds.in_same(9, 1))  # True
-    print(ds.in_same(9, 2))  # True
-
-
-main()
