@@ -3,8 +3,6 @@
 并查集 (Disjoint Set) 测试
 """
 
-import sys
-
 # 导入 DisjointSet 类，但不执行 disjoint-set.py 的 main()
 import disjointset
 
@@ -138,37 +136,3 @@ def test_large_set():
     for i in range(n):
         for j in range(n):
             assert ds.in_same(i, j), f"{i} 和 {j} 现在应该在同一个集合"
-
-
-def main():
-    """运行所有测试"""
-    tests = [
-        ("初始化", test_initialization),
-        ("基本合并查找", test_basic_union_find),
-        ("路径压缩", test_path_compression),
-        ("按秩合并", test_rank),
-        ("自合并", test_self_join),
-        ("大集合", test_large_set),
-    ]
-
-    passed = 0
-    failed = 0
-
-    for name, test_func in tests:
-        try:
-            test_func()
-            print(f"✓ {name}测试通过")
-            passed += 1
-        except AssertionError as e:
-            print(f"✗ {name}测试失败: {e}")
-            failed += 1
-        except Exception as e:
-            print(f"✗ {name}测试错误: {e}")
-            failed += 1
-
-    print(f"\n总计: {passed}通过, {failed}失败")
-    return 0 if failed == 0 else 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())

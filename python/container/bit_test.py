@@ -2,9 +2,6 @@
 """
 Binary Indexed Tree (Fenwick Tree) 测试
 """
-
-import sys
-
 # 导入 BinaryIndexedTree 类，但不执行 bit.py 的 main()
 import bit
 
@@ -124,36 +121,3 @@ def test_large_array():
     # 总和：125250 + 601 = 125851
     expected_sum_500 = 500 * 501 // 2 + 501 + 100
     assert bit.sum(500) == expected_sum_500
-
-
-def main():
-    """运行所有测试"""
-    tests = [
-        ("基本操作", test_basic_operations),
-        ("更新操作", test_update_operations),
-        ("边界情况", test_edge_cases),
-        ("区间查询", test_range_queries),
-        ("大数组", test_large_array),
-    ]
-
-    passed = 0
-    failed = 0
-
-    for name, test_func in tests:
-        try:
-            test_func()
-            print(f"✓ {name}测试通过")
-            passed += 1
-        except AssertionError as e:
-            print(f"✗ {name}测试失败: {e}")
-            failed += 1
-        except Exception as e:
-            print(f"✗ {name}测试错误: {e}")
-            failed += 1
-
-    print(f"\n总计: {passed}通过, {failed}失败")
-    return 0 if failed == 0 else 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())

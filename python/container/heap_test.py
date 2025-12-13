@@ -3,8 +3,6 @@
 堆 (Heap) 测试
 """
 
-import sys
-
 # 导入 heap 模块中的函数，但不执行 heap.py 的 main()
 import heap
 
@@ -145,37 +143,3 @@ def test_edge_cases():
     # 测试非常大的数字
     large_numbers = [10**100, -(10**100), 0, 10**50, -(10**50)]
     assert heap.heapsort(large_numbers) == [-(10**100), -(10**50), 0, 10**50, 10**100]
-
-
-def main():
-    """运行所有测试"""
-    tests = [
-        ("堆排序基本", test_heapsort_basic),
-        ("堆排序大列表", test_heapsort_large),
-        ("优先队列基本", test_priority_queue_basic),
-        ("优先队列复杂", test_priority_queue_complex),
-        ("堆属性", test_heap_properties),
-        ("边界情况", test_edge_cases),
-    ]
-
-    passed = 0
-    failed = 0
-
-    for name, test_func in tests:
-        try:
-            test_func()
-            print(f"✓ {name}测试通过")
-            passed += 1
-        except AssertionError as e:
-            print(f"✗ {name}测试失败: {e}")
-            failed += 1
-        except Exception as e:
-            print(f"✗ {name}测试错误: {e}")
-            failed += 1
-
-    print(f"\n总计: {passed}通过, {failed}失败")
-    return 0 if failed == 0 else 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())
