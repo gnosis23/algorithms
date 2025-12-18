@@ -7,27 +7,30 @@
 
 class DisjointSet:
     def __init__(self, n: int):
-        self.p = [0] * n
+        self.parent = list(range(n))
         self.rank = [0] * n
-        for i in range(n):
-            self.p[i] = i
 
     def in_same(self, u: int, v: int) -> bool:
-        return self.find_set(u) == self.find_set(v)
+        return self.find(u) == self.find(v)
 
-    def join(self, u: int, v: int) -> None:
-        if self.find_set(u) != self.find_set(v):
-            self._link(self.find_set(u), self.find_set(v))
+    def union(self, u: int, v: int) -> bool:
+        """
+        返回值表示是否发生了合并（原来不在一个集合中）
+        """
+        if self.find(u) != self.find(v):
+            self._merge(self.find(u), self.find(v))
+            return True
+        return False
 
-    def find_set(self, u: int) -> int:
-        if u != self.p[u]:
-            self.p[u] = self.find_set(self.p[u])
-        return self.p[u]
+    def find(self, u: int) -> int:
+        if u != self.parent[u]:
+            self.parent[u] = self.find(self.parent[u])
+        return self.parent[u]
 
-    def _link(self, u: int, v: int) -> None:
+    def _merge(self, u: int, v: int) -> None:
         if self.rank[u] > self.rank[v]:
-            self.p[v] = u
+            self.parent[v] = u
         else:
-            self.p[u] = v
+            self.parent[u] = v
             if self.rank[u] == self.rank[v]:
                 self.rank[u] = self.rank[v] + 1
