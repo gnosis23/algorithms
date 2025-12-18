@@ -1,24 +1,26 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 import typing
 
+LinkedVertex = namedtuple("Vertext", ["node", "weight"])
 
-class SimpleGraph:
+
+class LinkedGraph:
     """
     有向带权图，不支持重复边
     """
 
     def __init__(self):
-        self.graph: typing.DefaultDict[int, dict[int, int]] = defaultdict(dict)
+        self.graph: typing.DefaultDict[int, list[LinkedVertex]] = defaultdict(list)
 
     def add_edge(self, u: int, v: int, w: int = 0):
-        self.graph[u][v] = w
+        self.graph[u].append(LinkedVertex(v, w))
 
     def __iter__(self):
         return iter(self.graph)
 
 
 def main():
-    g = SimpleGraph()
+    g = LinkedGraph()
 
     g.add_edge(0, 1, 5)
     g.add_edge(0, 5, 2)
@@ -32,7 +34,7 @@ def main():
 
     for v in g:
         for w in g.graph[v]:
-            print(f"{v} -> {w} = {g.graph[v][w]}")
+            print(f"{v} -> {w.node} = {w.weight}")
 
 
 main()
