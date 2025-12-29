@@ -91,6 +91,26 @@ def dfs(depth: int, rest: int):
 dfs(0, 8)
 ```
 
+## Python 迭代器
+
+结合 yield 来实现打印排列组合 `[1,2,3,4]`
+
+```py
+def list_perm(depth: int, nums: list[int]):
+    if depth == 4:
+        yield nums
+    else:
+        for num in [1, 2, 3, 4]:
+            nums.append(num)
+            for result in list_perm(depth + 1, nums):
+                yield result
+            nums.pop()
+
+# 返回迭代器，需要消费
+for x in list_perm(0, []):
+    print(x)
+```
+
 ## 练习
 
 - [二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/)
