@@ -27,7 +27,7 @@ class Solution:
                 median = curr_list[(len(curr_list) - 1) // 2]
                 state_info[mask] = (median, curr_list)
 
-        inf = 1e20
+        inf = 10**18
         dp = [inf] * (1 << n)
 
         for i in range(n):

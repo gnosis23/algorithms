@@ -22,7 +22,12 @@
 
 ## 子集状态 DP
 
+通过枚举状态的子集进行状态迁移，一般通过 bit 表示集合。
+
+枚举 k 个 bit 的所有状态的子集的时间复杂度是 `O(k^3)` 。
+
 - [LC2305. 公平分发饼干][7]
+- [LC1986. 完成任务的最少工作时间段][8]
 - [LC3801. 合并有序列表的最小成本][6]
 
 ## References
@@ -34,3 +39,4 @@
 [5]: https://leetcode.cn/problems/max-dot-product-of-two-subsequences
 [6]: https://leetcode.cn/problems/minimum-cost-to-merge-sorted-lists/description/
 [7]: https://leetcode.cn/problems/fair-distribution-of-cookies/description/
+[8]: https://leetcode.cn/problems/minimum-number-of-work-sessions-to-finish-the-tasks/description/
