@@ -20,6 +20,11 @@
 - [LC2719. 统计整数数目][4]
 - [LC3791. 给定范围内平衡整数的数目][1]
 
+## 子集状态 DP
+
+- [LC2305. 公平分发饼干][7]
+- [LC3801. 合并有序列表的最小成本][6]
+
 ## References
 
 [1]: https://leetcode.cn/problems/number-of-balanced-integers-in-a-range/description/
@@ -27,3 +32,5 @@
 [3]: https://leetcode.cn/problems/count-distinct-integers-after-removing-zeros/
 [4]: https://leetcode.cn/problems/count-of-integers/
 [5]: https://leetcode.cn/problems/max-dot-product-of-two-subsequences
+[6]: https://leetcode.cn/problems/minimum-cost-to-merge-sorted-lists/description/
+[7]: https://leetcode.cn/problems/fair-distribution-of-cookies/description/
