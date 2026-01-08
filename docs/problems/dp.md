@@ -1,5 +1,9 @@
 # DP
 
+## 最长公共子序列 LCS
+
+- [LC1458: 两个子序列的最大点积][5]
+
 ## 数位 DP
 
 数位 DP (Digit Dynamic Programming) 是一种特殊的动态规划技巧，主要用于解决在给定区间 $[L, R]$ 内，
@@ -22,3 +26,4 @@
 [2]: https://leetcode.cn/problems/number-of-digit-one/description/
 [3]: https://leetcode.cn/problems/count-distinct-integers-after-removing-zeros/
 [4]: https://leetcode.cn/problems/count-of-integers/
+[5]: https://leetcode.cn/problems/max-dot-product-of-two-subsequences
