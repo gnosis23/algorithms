@@ -20,11 +20,19 @@
 - [LC2719. 统计整数数目][4]
 - [LC3791. 给定范围内平衡整数的数目][1]
 
-## 子集状态 DP
+## 状态压缩
+
+用 `dp[s]` 表示状态，s 为 n 个因子选/不选的集合(大小 2^n) 。 n 一般 <= 15
+
+- LC526. 优美的排列: `dp[s]` 记录排列的数量
+- [LC2741. 特别的排列][9]: 统计排列数量，`dp[s][i]` 需要记录最后一位
+- [LC996. 平方数组的数目][10]: 思路同上。注意重复数字需要在同一个迭代时跳过
+
+## 状态压缩+子集
 
 通过枚举状态的子集进行状态迁移，一般通过 bit 表示集合。
 
-枚举 k 个 bit 的所有状态的子集的时间复杂度是 `O(k^3)` 。
+枚举 k 个 bit 的所有状态的子集的时间复杂度是 `O(3^k)` 。k 一般 <= 15
 
 - [LC2305. 公平分发饼干][7]
 - [LC1986. 完成任务的最少工作时间段][8]
@@ -40,3 +48,5 @@
 [6]: https://leetcode.cn/problems/minimum-cost-to-merge-sorted-lists/description/
 [7]: https://leetcode.cn/problems/fair-distribution-of-cookies/description/
 [8]: https://leetcode.cn/problems/minimum-number-of-work-sessions-to-finish-the-tasks/description/
+[9]: https://leetcode.cn/problems/special-permutations/description/
+[10]: https://leetcode.cn/problems/number-of-squareful-arrays/description/
