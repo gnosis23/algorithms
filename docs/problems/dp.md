@@ -52,6 +52,12 @@
 - LC1681. 最小不兼容
 - [LC3801. 合并有序列表的最小成本][6]
 
+## 前缀和优化
+
+通过前缀相减获得一个区间的值，如 `values(i, j) = values(i) - values(j - 1)`
+
+- LC1871. 跳跃游戏 VII: 如果 `[i - max, i - min]` 区间存在 0，则可以跳过去
+
 ## References
 
 [1]: https://leetcode.cn/problems/number-of-balanced-integers-in-a-range/description/
