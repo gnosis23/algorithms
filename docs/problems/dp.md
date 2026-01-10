@@ -70,6 +70,7 @@ Advanced
 通过前缀相减获得一个区间的值，如 `values(i, j) = values(i) - values(j - 1)`
 
 - [LC1871. 跳跃游戏 VII](): 如果 `[i - max, i - min]` 区间存在 0，则可以跳过去
+- [LC3797. 统计在矩形格子里移动的路径数目](): 需要本行和前一行的前缀和
 
 ## References
 
