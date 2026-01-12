@@ -2,15 +2,16 @@
 """
 Binary Indexed Tree (Fenwick Tree) 测试
 """
-# 导入 BinaryIndexedTree 类，但不执行 bit.py 的 main()
-import bit
 
-BinaryIndexedTree = bit.BinaryIndexedTree
+# 导入 FenwickTree 类，但不执行 bit.py 的 main()
+import fenwick as fenwick
+
+FenwickTree = fenwick.FenwickTree
 
 
 def test_basic_operations():
     """测试基本操作"""
-    bit = BinaryIndexedTree(5)
+    bit = FenwickTree(5)
 
     # 添加元素
     bit.add(0, 5)
@@ -29,7 +30,7 @@ def test_basic_operations():
 
 def test_update_operations():
     """测试更新操作"""
-    bit = BinaryIndexedTree(5)
+    bit = FenwickTree(5)
 
     # 初始添加
     bit.add(0, 5)
@@ -53,17 +54,17 @@ def test_update_operations():
 def test_edge_cases():
     """测试边界情况"""
     # 测试大小为1的树
-    bit1 = BinaryIndexedTree(1)
+    bit1 = FenwickTree(1)
     bit1.add(0, 10)
     assert bit1.sum(0) == 10
 
     # 测试大小为0的树
-    bit0 = BinaryIndexedTree(0)
+    bit0 = FenwickTree(0)
     # 对于大小为0的树，add操作应该被忽略或失败
     # 这里我们只测试它不会崩溃
 
     # 测试负值添加
-    bit = BinaryIndexedTree(3)
+    bit = FenwickTree(3)
     bit.add(0, 10)
     bit.add(1, -5)
     bit.add(2, 3)
@@ -75,7 +76,7 @@ def test_edge_cases():
 
 def test_range_queries():
     """测试区间查询（通过前缀和计算）"""
-    bit = BinaryIndexedTree(10)
+    bit = FenwickTree(10)
 
     # 添加一些数据: 1, 2, 3, ..., 10
     for i in range(10):
@@ -97,7 +98,7 @@ def test_range_queries():
 def test_large_array():
     """测试大数组性能"""
     n = 1000
-    bit = BinaryIndexedTree(n)
+    bit = FenwickTree(n)
 
     # 添加数据: 1, 2, 3, ..., 1000
     for i in range(n):

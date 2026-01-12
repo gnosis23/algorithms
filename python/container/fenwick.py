@@ -4,7 +4,7 @@
 """
 
 
-class BinaryIndexedTree:
+class FenwickTree:
     def __init__(self, n: int):
         self.n = n
         self.data = [0] * (n + 1)
@@ -20,6 +20,11 @@ class BinaryIndexedTree:
             total += self.data[n]
             n = n & (n - 1)
         return total
+
+    def range_sum(self, low: int, high: int) -> int:
+        sumr = self.sum(high)
+        suml = self.sum(low - 1) if low > 0 else 0
+        return sumr - suml
 
     def add(self, i: int, a: int) -> None:
         """
