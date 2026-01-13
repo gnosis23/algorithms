@@ -28,10 +28,18 @@ Advanced
 为什么数位 DP 这么快？比如计算数字 1XXXX 和 2XXXX 的计算，其实后面部分是重复的，利用记忆化搜索可以
 减少大量计算。时间复杂度=`O(K * State * 2 * 2)`
 
-- [LC233. 数字 1 的个数][2]
+### 统计合法元素的数目
+
 - [LC3747. 统计移除零后不同整数的数目][3]
 - [LC2719. 统计整数数目][4]
 - [LC3791. 给定范围内平衡整数的数目][1]
+
+### 统计合法元素的价值总和
+
+- [LC233. 数字 1 的个数][2]
+- [LC3007. 价值和小雨等于 K 的最大数字 (2258)][12]: 二进制数位 dp
+- [LC3753. 范围内波动值 II (2297)][11]: 统计范围内所有数字的波峰、波谷值的和
+  - 需要额外两位保存前值和波动方向
 
 ## 状态压缩
 
@@ -84,3 +92,5 @@ Advanced
 [8]: https://leetcode.cn/problems/minimum-number-of-work-sessions-to-finish-the-tasks/description/
 [9]: https://leetcode.cn/problems/special-permutations/description/
 [10]: https://leetcode.cn/problems/number-of-squareful-arrays/description/
+[11]: https://leetcode.cn/problems/total-waviness-of-numbers-in-range-ii/description/
+[12]: https://leetcode.cn/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/description/
