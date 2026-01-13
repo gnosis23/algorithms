@@ -10,6 +10,8 @@
 
 ## 线段树
 
+- [LC3479. 水果成篮 III (2178)][4]: 查找第一个满足>=k 的位置。模板
+
 ## Reference
 
 - [树状数组](https://oi-wiki.org/ds/fenwick)
@@ -17,3 +19,4 @@
 [1]: https://leetcode.cn/problems/range-sum-query-mutable/
 [2]: https://leetcode.cn/problems/distribute-elements-into-two-arrays-ii/description/
 [3]: https://leetcode.cn/problems/number-of-integers-with-popcount-depth-equal-to-k-ii/description/
+[4]: https://leetcode.cn/problems/fruits-into-baskets-iii/description/

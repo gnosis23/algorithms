@@ -1,6 +1,6 @@
 """
 线段树
-查询索引从0开始 [0, n-1]
+查询 k 首次出现位置
 """
 
 
@@ -19,7 +19,7 @@ class SegmentTree:
 
     def _merge(self, a: int, b: int):
         """更新: 加法, min/max..."""
-        return a + b
+        return max(a, b)
 
     def _maintain(self, node: int):
         self.tree[node] = self._merge(self.tree[node * 2 + 1], self.tree[node * 2 + 2])
@@ -51,38 +51,33 @@ class SegmentTree:
             self._update(right_node, mid + 1, end, idx, val)
         self._maintain(node)
 
-    def query(self, L, R):
+    def query_k(self, k):
         """
-        查询区间 [L, R] 的和
-        位置从0开始索引
+        利用已知区间信息，快速找到第一个大于 K 的位置。否则返回-1
         """
-        return self._query(0, 0, self.n - 1, L, R)
+        return self._query_k(0, 0, self.n - 1, k)
 
-    def _query(self, node, start, end, L, R):
-        if L <= start and end <= R:
-            return self.tree[node]
-        if end < L or start > R:
-            return 0
+    def _query_k(self, node, start, end, k):
+        if self.tree[node] < k:
+            return -1
+        if start == end:
+            return start
+        left = self.tree[node * 2 + 1]
         mid = (start + end) // 2
-        left_sum = self._query(2 * node + 1, start, mid, L, R)
-        right_sum = self._query(2 * node + 2, mid + 1, end, L, R)
-
-        return self._merge(left_sum, right_sum)
+        if left >= k:
+            return self._query_k(node * 2 + 1, start, mid, k)
+        else:
+            return self._query_k(node * 2 + 2, mid + 1, end, k)
 
 
 if __name__ == "__main__":
     # 使用示例
-    nums = [1, 3, 5, 7, 9, 11]
-    st = SegmentTree(len(nums))
-    for idx, num in enumerate(nums):
-        st.update(idx, num)
-
-    print(f"区间 [1, 3] 的和: {st.query(1, 3)}")  # 输出: 3+5+7 = 15
-    st.update(2, 10)  # 将 index 2 的值由 5 改为 10
-    print(f"更新后区间 [1, 3] 的和: {st.query(1, 3)}")  # 输出: 3+10+7 = 20
-
+    nums = [4, 1, 2, 3, 5]
     st = SegmentTree(nums)
 
-    print(f"区间 [1, 3] 的和: {st.query(1, 3)}")  # 输出: 3+5+7 = 15
+    print("首个满足>=2的位置", st.query_k(2))  # 0
+    print("首个满足>=5的位置", st.query_k(5))  # 4
+    print("首个满足>=8的位置", st.query_k(8))  # -1
+
     st.update(2, 10)  # 将 index 2 的值由 5 改为 10
-    print(f"更新后区间 [1, 3] 的和: {st.query(1, 3)}")  # 输出: 3+10+7 = 20
+    print("首个满足>=8的位置", st.query_k(8))  # 2
