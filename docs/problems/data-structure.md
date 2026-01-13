@@ -11,6 +11,7 @@
 ## 线段树
 
 - [LC3479. 水果成篮 III (2178)][4]: 查找第一个满足>=k 的位置。模板
+- [LC2940. 找到 Alice 和 Bob 相遇的建筑 (2327)][5]: 同上
 
 ## Reference
 
@@ -20,3 +21,4 @@
 [2]: https://leetcode.cn/problems/distribute-elements-into-two-arrays-ii/description/
 [3]: https://leetcode.cn/problems/number-of-integers-with-popcount-depth-equal-to-k-ii/description/
 [4]: https://leetcode.cn/problems/fruits-into-baskets-iii/description/
+[5]: https://leetcode.cn/problems/find-building-where-alice-and-bob-can-meet/description/

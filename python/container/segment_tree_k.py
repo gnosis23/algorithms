@@ -51,23 +51,19 @@ class SegmentTree:
             self._update(right_node, mid + 1, end, idx, val)
         self._maintain(node)
 
-    def query_k(self, k):
-        """
-        利用已知区间信息，快速找到第一个大于 K 的位置。否则返回-1
-        """
-        return self._query_k(0, 0, self.n - 1, k)
-
-    def _query_k(self, node, start, end, k):
-        if self.tree[node] < k:
+    def query(self, node, start, end, L, R, k):
+        """查找范围内>=k的第一个位置"""
+        # 不在范围内或者不存在合理的值
+        if end < L or start > R or self.tree[node] < k:
             return -1
+        # 到达叶子结点，必然 >= k
         if start == end:
             return start
-        left = self.tree[node * 2 + 1]
         mid = (start + end) // 2
-        if left >= k:
-            return self._query_k(node * 2 + 1, start, mid, k)
-        else:
-            return self._query_k(node * 2 + 2, mid + 1, end, k)
+        res = self.query(node * 2 + 1, start, mid, L, R, k)
+        if res == -1:
+            return self.query(node * 2 + 2, mid + 1, end, L, R, k)
+        return res
 
 
 if __name__ == "__main__":
@@ -75,9 +71,9 @@ if __name__ == "__main__":
     nums = [4, 1, 2, 3, 5]
     st = SegmentTree(nums)
 
-    print("首个满足>=2的位置", st.query_k(2))  # 0
-    print("首个满足>=5的位置", st.query_k(5))  # 4
-    print("首个满足>=8的位置", st.query_k(8))  # -1
+    print("首个满足>=2的位置", st.query(0, 0, st.n - 1, 0, st.n - 1, 2))  # 0
+    print("首个满足>=5的位置", st.query(0, 0, st.n - 1, 0, st.n - 1, 5))  # 4
+    print("首个满足>=8的位置", st.query(0, 0, st.n - 1, 0, st.n - 1, 8))  # -1
 
     st.update(2, 10)  # 将 index 2 的值由 5 改为 10
-    print("首个满足>=8的位置", st.query_k(8))  # 2
+    print("首个满足>=8的位置", st.query(0, 0, st.n - 1, 0, st.n - 1, 8))  # 2
