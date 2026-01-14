@@ -1,6 +1,7 @@
 """
 线段树
-查询索引从0开始 [0, n-1]
+节点从 1 开始，左节点 no * 2, 右节点 no * 2 + 1
+查询索引从 0 开始
 """
 
 
@@ -10,64 +11,57 @@ class SegmentTree:
             arr = [default] * arr
         n = len(arr)
         # 容量为2的整数幂
-        self.n = 1
-        while self.n < n:
-            self.n *= 2
-        # 初始化
-        self.tree = [0] * (2 * self.n - 1)
-        self._build(arr, 0, 0, self.n - 1)
+        self.n = n
+        self.tree = [0] * (2 << (n - 1).bit_length())
+        self._build(arr, 1, 0, n - 1)
 
-    def _merge(self, a: int, b: int):
+    def _merge_val(self, a, b):
         """更新: 加法, min/max..."""
         return a + b
 
-    def _maintain(self, node: int):
-        self.tree[node] = self._merge(self.tree[node * 2 + 1], self.tree[node * 2 + 2])
+    def _maintain(self, node):
+        """合并左右儿子"""
+        self.tree[node] = self._merge_val(self.tree[node * 2], self.tree[node * 2 + 1])
 
-    def _build(self, arr, node, start, end):
-        if start == end:
-            if start < len(arr):
-                self.tree[node] = arr[start]
+    def _build(self, arr, node, L, R):
+        if L == R:
+            self.tree[node] = arr[L]
             return
-        mid = (start + end) // 2
-        self._build(arr, node * 2 + 1, start, mid)
-        self._build(arr, node * 2 + 2, mid + 1, end)
+        mid = (L + R) // 2
+        self._build(arr, node * 2, L, mid)
+        self._build(arr, node * 2 + 1, mid + 1, R)
         self._maintain(node)
 
-    def update(self, idx, val):
-        """将索引 idx 的值更新为 val"""
-        self._update(0, 0, self.n - 1, idx, val)
-
-    def _update(self, node, start, end, idx, val):
-        if start == end:
+    def _update(self, node, L, R, index, val):
+        if L == R:
             self.tree[node] = val
             return
-        mid = (start + end) // 2
-        left_node = 2 * node + 1
-        right_node = 2 * node + 2
-        if idx <= mid:
-            self._update(left_node, start, mid, idx, val)
+        mid = (L + R) // 2
+        if index <= mid:  # 在左边
+            self._update(node * 2, L, mid, index, val)
         else:
-            self._update(right_node, mid + 1, end, idx, val)
+            self._update(node * 2 + 1, mid + 1, R, index, val)
         self._maintain(node)
 
-    def query(self, L, R):
-        """
-        查询区间 [L, R] 的和
-        位置从0开始索引
-        """
-        return self._query(0, 0, self.n - 1, L, R)
+    def update(self, index, val):
+        """将索引 idx 的值更新为 val"""
+        self._update(1, 0, self.n - 1, index, val)
 
-    def _query(self, node, start, end, L, R):
-        if L <= start and end <= R:
+    def _query(self, node, L, R, ql, qr):
+        if ql <= L and R <= qr:
             return self.tree[node]
-        if end < L or start > R:
-            return 0
-        mid = (start + end) // 2
-        left_sum = self._query(2 * node + 1, start, mid, L, R)
-        right_sum = self._query(2 * node + 2, mid + 1, end, L, R)
+        mid = (L + R) // 2
+        # 剪枝优化：保证进入的递归区间必然相交
+        if qr <= mid:
+            return self._query(node * 2, L, mid, ql, qr)
+        if ql > mid:
+            return self._query(node * 2 + 1, mid + 1, R, ql, qr)
+        left_val = self._query(node * 2, L, mid, ql, qr)
+        right_val = self._query(node * 2 + 1, mid + 1, R, ql, qr)
+        return self._merge_val(left_val, right_val)
 
-        return self._merge(left_sum, right_sum)
+    def query(self, ql, qr):
+        return self._query(1, 0, self.n - 1, ql, qr)
 
 
 if __name__ == "__main__":
