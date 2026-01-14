@@ -13,6 +13,11 @@
 - [LC3479. 水果成篮 III (2178)][4]: 查找第一个满足>=k 的位置。模板
 - [LC2940. 找到 Alice 和 Bob 相遇的建筑 (2327)][5]: 同上
 
+## Lazy 线段树
+
+- [LC850. 矩形面积 II][7]: 扫描线，离散化，线段树
+- [LC3454. 分割正方形 II (2671)][6]
+
 ## Reference
 
 - [树状数组](https://oi-wiki.org/ds/fenwick)
@@ -22,3 +27,5 @@
 [3]: https://leetcode.cn/problems/number-of-integers-with-popcount-depth-equal-to-k-ii/description/
 [4]: https://leetcode.cn/problems/fruits-into-baskets-iii/description/
 [5]: https://leetcode.cn/problems/find-building-where-alice-and-bob-can-meet/description/
+[6]: https://leetcode.cn/problems/separate-squares-ii/description/
+[7]: https://leetcode.cn/problems/rectangle-area-ii/description/
