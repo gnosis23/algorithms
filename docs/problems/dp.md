@@ -1,6 +1,8 @@
 # DP
 
-## 最长公共子序列 LCS
+## 经典问题
+
+### 最长公共子序列 LCS
 
 令 `dp[i][j]` 为 `s[:i]` 和 `t[:j]` 的最小编辑值。长度需要额外+1
 
@@ -16,6 +18,19 @@ Advanced
   - `dp(i, j) = max(dp(i, j - 1), dp(i - 1, j - 1) + a_i * b_j)`
 - [LC115. 不同的子序列](): 统计 s 中 t 出现的个数
   - 思路同 3290，区别是初始化 `dp(0, i)` 为 1
+
+## 划分 DP
+
+TODO
+
+## 状态机 DP
+
+一般用 `dp[i][s]` 来表示前 i 个元素的状态值
+
+- [LC3259. 超级饮料的最大强化能力 (1484)][13]: 2 种状态切换比较简单
+- [LC2222. 选择建筑的方案数 (1657)][14]: 只有 `010` 和 `101` 两种情况
+- [LC1567. 乘积为正数的最长子数组长度 (1710)][15]: 不错的状态转移练习
+  - 注意子数组中的第一个正数和负数需要特殊判断
 
 ## 数位 DP
 
@@ -94,3 +109,6 @@ Advanced
 [10]: https://leetcode.cn/problems/number-of-squareful-arrays/description/
 [11]: https://leetcode.cn/problems/total-waviness-of-numbers-in-range-ii/description/
 [12]: https://leetcode.cn/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/description/
+[13]: https://leetcode.cn/problems/maximum-energy-boost-from-two-drinks/description/
+[14]: https://leetcode.cn/problems/number-of-ways-to-select-buildings/description/
+[15]: https://leetcode.cn/problems/maximum-length-of-subarray-with-positive-product/
