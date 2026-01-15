@@ -15,6 +15,10 @@
 
 ## Lazy 线段树
 
+- [LC2569. 更新数组后处理求和查询 (2398)][8]: `nums2[i] = nums2[i] + nums1[i] * p`
+  - 不用管 nums2 ；操作一 == apply(-1, 1)；操作二 == apply(p, 0)
+- [LC1622. 奇妙序列][9]: `nums[i] = a*x + b`
+  - Python 超时，C++过来
 - [LC850. 矩形面积 II][7]: 扫描线，离散化，线段树
 - [LC3454. 分割正方形 II (2671)][6]
 
@@ -29,3 +33,5 @@
 [5]: https://leetcode.cn/problems/find-building-where-alice-and-bob-can-meet/description/
 [6]: https://leetcode.cn/problems/separate-squares-ii/description/
 [7]: https://leetcode.cn/problems/rectangle-area-ii/description/
+[8]: https://leetcode.cn/problems/handling-sum-queries-after-update/description/
+[9]: https://leetcode.cn/problems/fancy-sequence/description/
