@@ -32,6 +32,20 @@ TODO
 - [LC1567. 乘积为正数的最长子数组长度 (1710)][15]: 不错的状态转移练习
   - 注意子数组中的第一个正数和负数需要特殊判断
 
+## 其他线性DP
+
+### 子数组DP
+
+- [LC53. 最大子数组和][16]: 前面>=0合并，否则新开一个数组
+- [LC152. 乘积最大子数组][17]: 维护 `max[i]` 和 `min[i]`
+
+### 合法子序列DP
+
+- [LC2501. 数组中最长的方波][20]
+- [LC560. 和为K的子数组][19]: 见560.py
+- [LC3811. 交替按位异或分割的数目][18]
+  - 维护两个字典，分别是以target1结尾异或的数量和以target2结尾异或的数量
+
 ## 数位 DP
 
 数位 DP (Digit Dynamic Programming) 是一种特殊的动态规划技巧，主要用于解决在给定区间 $[L, R]$ 内，
@@ -112,3 +126,8 @@ TODO
 [13]: https://leetcode.cn/problems/maximum-energy-boost-from-two-drinks/description/
 [14]: https://leetcode.cn/problems/number-of-ways-to-select-buildings/description/
 [15]: https://leetcode.cn/problems/maximum-length-of-subarray-with-positive-product/
+[16]: https://leetcode.cn/problems/maximum-subarray/description/
+[17]: https://leetcode.cn/problems/maximum-product-subarray/description/
+[18]: https://leetcode.cn/problems/number-of-alternating-xor-partitions/description/
+[19]: https://leetcode.cn/problems/subarray-sum-equals-k/description/
+[20]: https://leetcode.cn/problems/longest-square-streak-in-an-array/description/
