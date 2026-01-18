@@ -9,69 +9,38 @@ bisect_right(a, x, lo=0, hi=len(a), *, key=None)
 import bisect
 
 
-def find_right_lte(a: list[int], x: int) -> int:
-    """
-    返回最大的插入坐标使得a为顺序
-
-    :param a: 非降序列表
-    :param x: 目标值
-    :return: 坐标，[0, n]
-    """
-    i = bisect.bisect_right(a, x)
-    return i
-
-
-def find_left_lte(a: list[int], x: int) -> int:
-    """
-    返回最小的插入坐标使得a为顺序
-    practice: https://leetcode.cn/problems/search-insert-position
-
-    :param a: 非降序列表
-    :param x: 目标值
-    :return: 坐标，[0, n]
-    """
-    i = bisect.bisect_left(a, x)
-    return i
-
-
 def main():
-    lst = [1, 3, 3, 3, 5, 7, 9]
+    nums = [1, 3, 3, 3, 5, 7, 9]
 
-    # [1, 3, 3, 3, 5, 7, 9]
-    #  l
-    #  r
-    print(find_left_lte(lst, 0))  # 0
-    print(find_right_lte(lst, 0))  # 0
+    # >= x 的第一个元素的下标: bisect_left(nums, x)，不存在则为 n
+    print(bisect.bisect_left(nums, 1))  # 0
+    print(bisect.bisect_left(nums, 2))  # 1
+    print(bisect.bisect_left(nums, 0.5))  # 0
+    print(bisect.bisect_left(nums, 100))  # 7
 
-    # [1, 3, 3, 3, 5, 7, 9]
-    #  l
-    #     r
-    print(find_left_lte(lst, 1))  # 0
-    print(find_right_lte(lst, 1))  # 1
+    # > x 的第一个元素的下标: bisect_right(nums, x)，不存在则为 n
+    print('----------')
+    print(bisect.bisect_right(nums, 1))  # 1
+    print(bisect.bisect_right(nums, 2))  # 1
+    print(bisect.bisect_right(nums, 3))  # 4
+    print(bisect.bisect_right(nums, 0.5))  # 0
+    print(bisect.bisect_right(nums, 100))  # 7
 
-    # [1, 3, 3, 3, 5, 7, 9]
-    #     l
-    #              r
-    print(find_left_lte(lst, 3))  # 1
-    print(find_right_lte(lst, 3))  # 4
+    # < x 的最后一个元素的下标: bisect_left(nums, x) - 1，不存在则为 -1
+    print('----------')
+    print(bisect.bisect_left(nums, 1) - 1)  # -1
+    print(bisect.bisect_left(nums, 2) - 1)  # 0
+    print(bisect.bisect_left(nums, 3) - 1)  # 0
+    print(bisect.bisect_left(nums, 0.5) - 1)  # -1
+    print(bisect.bisect_left(nums, 100) - 1)  # 6
 
-    # [1, 3, 3, 3, 5, 7, 9]
-    #              l
-    #                 r
-    print(find_left_lte(lst, 5))  # 4
-    print(find_right_lte(lst, 5))  # 5
-
-    # [1, 3, 3, 3, 5, 7, 9]
-    #                       l
-    #                       r
-    print(find_left_lte(lst, 10))  # 7
-    print(find_right_lte(lst, 10))  # 7
-
-    # 搜索部分元素
-    nums = [0, 1, 4, 5, 6]
-    print(bisect.bisect_left(range(3), 4, key=lambda x: nums[x]))  # 2
-    print(bisect.bisect_left(range(3), 0, key=lambda x: nums[x]))  # 0
-    print(bisect.bisect_left(range(3), 2, key=lambda x: nums[x]))  # 1
+    # <= x 的最后一个元素的下标: bisect_right(nums, x) - 1，不存在则为 -1
+    print('----------')
+    print(bisect.bisect_right(nums, 1) - 1)  # 0
+    print(bisect.bisect_right(nums, 2) - 1)  # 0
+    print(bisect.bisect_right(nums, 3) - 1)  # 3
+    print(bisect.bisect_right(nums, 0.5) - 1)  # -1
+    print(bisect.bisect_right(nums, 100) - 1)  # 6
 
 
 main()
